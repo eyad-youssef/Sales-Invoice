@@ -11,7 +11,7 @@ public class InvTableModel  extends AbstractTableModel{
     
     
     private ArrayList<InvoiceHeader> invoices;  
-    private String []cols = {"No","Date","Name", "Total"};
+    private String []cols = {"No","Date","Name"/*, "Total"*/};
 
     public InvTableModel(ArrayList<InvoiceHeader> invoices) {
         this.invoices = invoices;
@@ -41,8 +41,8 @@ public class InvTableModel  extends AbstractTableModel{
          switch(columnIndex){ 
              case 0 : return invoice.getNum() ; 
              case 1 :  return invoice.getDate();
-             case 2 : return invoice.getCutomername(); 
-             case 3 :return invoice.getinvtotal() ; 
+             case 2 : return  invoice.getCutomername(); 
+             //case 3 :return invoice.getinvtotal() ; 
              default : return ""; 
          
          

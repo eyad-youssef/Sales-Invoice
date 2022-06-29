@@ -2,7 +2,7 @@
 package sig.model;
 
 
-public class InvoiceLine { 
+public class InvoiceLine  { 
      
     private String name; 
     private double price; 
@@ -15,7 +15,7 @@ public class InvoiceLine {
     
     } ;
 
-    public InvoiceLine(String name , double price,int count,InvoiceHeader invoice ) {
+    public InvoiceLine(InvoiceHeader invoice , String name,double price,int count ) {
       
        
         this.name = name;

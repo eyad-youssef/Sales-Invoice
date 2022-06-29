@@ -22,7 +22,7 @@ public class InvoiceHeader {
     
     public  double getinvtotal(){  
         double total=0.0; 
-        for (InvoiceLine line : getLines()){
+        for (InvoiceLine line : getLines()){ 
         total+= line.getlinetotal();
         }
         
