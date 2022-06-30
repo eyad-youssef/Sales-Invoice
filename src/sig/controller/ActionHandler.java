@@ -135,7 +135,7 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
     
      @Override
     public void valueChanged(ListSelectionEvent e) { 
-        int selectedindex = frame.getHeaderTable().getSelectedRow(); 
+       
         
         
         
@@ -144,17 +144,19 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
          frame.getLineTable().setModel( new LineTableModel(lines)); 
          
          */
-         
+           int selectedindex = frame.getHeaderTable().getSelectedRow(); 
+           
         if (selectedindex != -1 ){ 
            // System.out.println("row selected" +selectedindex );
-       InvoiceHeader currentinv =  frame.getInvoices().get(selectedindex);  
-       frame.getNumLabel().setText("" + currentinv.getNum()); 
-       frame.getDateLabel().setText( currentinv.getDate());
-       frame.getCustomerLabel().setText(currentinv.getCutomername()); 
-       frame.getTotalLabel().setText("" + currentinv.getinvtotal());   
+             InvoiceHeader currentinv =  frame.getInvoices().get(selectedindex);  
+                frame.getNumLabel().setText("" + currentinv.getNum()); 
+                frame.getDateLabel().setText( currentinv.getDate());
+                frame.getCustomerLabel().setText(currentinv.getCutomername()); 
+                frame.getTotalLabel().setText("" + currentinv.getinvtotal());   
        
       LineTableModel ltm =  new LineTableModel(currentinv.getLines());  
        frame.getLineTable().setModel(  ltm);
+       frame.getLineTable().setVisible(true);
        ltm.fireTableDataChanged();
     } 
     } 
@@ -169,23 +171,20 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
         int result = fc.showOpenDialog(frame); 
         if(result == JFileChooser.APPROVE_OPTION){
         
-        File headerFile = fc.getSelectedFile();  
+           File headerFile = fc.getSelectedFile();  
         
-         Path headerpath = Paths.get(headerFile.getAbsolutePath()); 
+           Path headerpath = Paths.get(headerFile.getAbsolutePath()); 
          
-         List<String>  headerlines= Files.lines(headerpath).collect(Collectors.toList());//Files.readAllLines(headerpath) ; 
-         ArrayList<InvoiceHeader> invoicesarray =new ArrayList<>(); 
+            List<String>  headerlines= Files.lines(headerpath).collect(Collectors.toList());//Files.readAllLines(headerpath) ; 
+            ArrayList<InvoiceHeader> invoicesarray =new ArrayList<>(); 
           
-         for(String headerline : headerlines){  
+            for(String headerline : headerlines){  
                 
-           try{  
-           String [] headerparts = headerline.split(",");
+                try{  
+                  String [] headerparts = headerline.split(",");
                  int invnum =Integer.parseInt(headerparts[0]) ; 
                  String invdate = headerparts[1];  
                  String customername = headerparts[2];
-                 
-                 
-                 
                  InvoiceHeader inv =new InvoiceHeader(invnum, invdate,customername );
                  invoicesarray.add(inv);  
           }catch(Exception ex){
@@ -203,15 +202,10 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
            for(String lineline : linelines){  
                try{
                 String [] lineparts = lineline.split(",");
-                
-                
-                
                  int invnum =Integer.parseInt(lineparts[0]) ; 
                  String itemname = lineparts[1];
                  double itemprice = Double.parseDouble(lineparts[2])  ; 
                  int itemcount =Integer.parseInt(lineparts[3]); 
-               
-                 
                  InvoiceHeader innv =null ;   
                  for(InvoiceHeader invoice  : invoicesarray ){ 
                  if(invoice.getNum() == invnum ){  
@@ -219,31 +213,22 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
                      
                      innv= invoice;  
                      break ; 
-                 
+                 }
                  }
                  InvoiceLine line =new InvoiceLine( innv,itemname,itemprice , itemcount);
                     innv.getLines().add(line);
-                 
-                 }
-                 frame.setInvoices(invoicesarray);
-                 
-                   }catch(Exception ex)
+                } catch(Exception ex)
                     { 
                         ex.printStackTrace();
                         JOptionPane.showMessageDialog(frame,"Line format error","Error",JOptionPane.ERROR_MESSAGE);
                     } 
            }
          }
-      
-         
-         
-         
-         
          //frame.setInvoices(invoicesarray) ; 
          
-         
-         InvTableModel invtablemodel =new InvTableModel(invoicesarray); 
-        frame.setInvtableModel(invtablemodel);  
+            frame.setInvoices(invoicesarray);
+            InvTableModel invtablemodel =new InvTableModel(invoicesarray); 
+            frame.setInvtableModel(invtablemodel);  
          
          frame.getHeaderTable().setModel(invtablemodel);  
          frame.getInvtableModel().fireTableDataChanged();
@@ -251,9 +236,9 @@ public class ActionHandler implements ActionListener , ListSelectionListener {
                  
         }
     }          
-        catch(IOException ex) {ex.printStackTrace(); 
-        
-        JOptionPane.showMessageDialog(frame,"format error","Error",JOptionPane.ERROR_MESSAGE);
+        catch(IOException ex) {
+            ex.printStackTrace(); 
+                 JOptionPane.showMessageDialog(frame,"format error","Error",JOptionPane.ERROR_MESSAGE);
         
         
         }
